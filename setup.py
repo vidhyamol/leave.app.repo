@@ -10,7 +10,7 @@ setup(name="leave.app",
       include_package_data=True,
       zip_safe=False,
       author='Vidhya',
-      namespace_packages=['Products','base', 'base/leave', 'base/leave/ui'],
+      namespace_packages=['Products','base'],
       install_requires=['setuptools',
                         ],
       )
