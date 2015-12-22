@@ -1,0 +1,224 @@
+<style>
+#list{
+width:100%;
+display:inline-block;
+}
+li{    
+margin:0px 1px;
+float:left;
+list-style:none;
+}
+a{
+padding:12px 10px;
+display:inline-block;
+border-radius: 5px;
+background:black;
+font-size:20px;
+font-weight:600;
+color:green;
+transition:all linear 0.15s;
+}
+table { 
+width:100%;
+}
+#cap{
+font-weight: bold;
+font-size:18px;
+width:50%;
+padding:8px 200px;
+}
+label{
+font-weight: bold;
+font-size:18px;
+display:inline-block;
+}
+#notif{
+color:red;
+display: block;
+margin-bottom: 10px;
+margin-top: 5px;
+text-align:center;
+font-weight: bold;
+font-size:16px;
+}
+</style>
+<div id="list">
+	<ul>
+
+	    <li><a href="#"  ng-click="empTabCtrl.applyLeaveForEmp()">Employee Details</a></li>
+	    <li><a href="#" ng-click="empTabCtrl.empDemographic()">Apply For Leave</a></li>
+	    <li><a href="#" >Apply For Restricted Holiday Leave</a></li>
+	  
+	</ul>
+</div>
+
+<div ng-show="empTabCtrl.first">
+<form role="form" name="empDemoForm" ng-init="empTabCtrl.empDataLoad()" novalidate>
+<h4 align="center"><u>Employee details</u></h4>
+ <table border = "0"align="center">
+    <tr>
+       <td id="cap"><label class=" control-label" translate>Employee No:</label></td>
+       <td id="cap">{{empTabCtrl.empDemoForm.empNo}}</td>
+     </tr>
+     <tr>
+       <td id="cap"><label class=" control-label" translate>Employee Name:</label></td>
+       <td id="cap">{{empTabCtrl.empDemoForm.empName}}</td>
+</tr>
+     <tr>
+       <td id="cap"><label class=" control-label" translate>Address:</label></td>
+       <td id="cap">{{empTabCtrl.empDemoForm.address}}</td>
+     </tr>
+     
+     <tr>
+       <td id="cap"><label class=" control-label" translate>Gender:</label></td>
+       <td id="cap">{{empTabCtrl.empDemoForm.gender}}</td>
+</tr>
+     <tr>
+       <td id="cap"><label class=" control-label" translate>Date Of Birth:</label></td>
+       <td id="cap">{{empTabCtrl.empDemoForm.dob}}</td>
+</tr>
+     <tr>
+       <td id="cap"><label class=" control-label" translate>Employee Age:</label></td>
+       <td id="cap">{{empTabCtrl.empDemoForm.empAge}}</td>
+       
+     </tr>
+     
+     <tr>
+       <td id="cap"><label class=" control-label" translate>Designation :</label></td>
+       <td id="cap">{{empTabCtrl.empDemoForm.designation}}</td>
+            </tr>
+     <tr>
+       <td id="cap"><label class=" control-label" translate>Reporting Lead :</label></td>
+       <td id="cap">{{empTabCtrl.empDemoForm.lead}}</td>
+            </tr>
+     <tr>
+       <td id="cap"><label class=" control-label" translate>Reporting Manager :</label></td>
+       <td id="cap">{{empTabCtrl.empDemoForm.manager}}</td>
+     </tr>			
+</table>
+</form>
+</div>
+    <div ng-show="empTabCtrl.second">
+      <form role="form" name="empLeaveForm" rc-submit="empTabCtrl.applyNewLeaveRequest()" ng-init="empTabCtrl.empNameLoad()" novalidate>
+	     <h4 align="center"><u>Leave Application</u></h4>
+	     <span id="notif">{{empTabCtrl.empLeaveForm.msg}}</span>
+            <table border = "0"align="center">
+               <tr>
+                  <td id="cap"><label class=" control-label" translate>Name:</label></td>
+                  <td id="cap" >{{empTabCtrl.empLeaveForm.name}}</td>
+               </tr>
+               
+               <tr>
+                  <td id="cap"><label class="control-label" translate>Leave Type :</label> </td>
+                  <td id="cap"><select ng-model="empTabCtrl.empLeaveForm.leave_type" ng-change="empTabCtrl.calcLeaveBalCount()">
+                                    <option value="">--Select One--</option>
+				    <option value="Earned_Leave">Earned Leave</option>
+				    <option value="Sick_Leave">Sick Leave</option>
+				    <option value="Leave_without_Pay">Leave without Pay</option>
+				    <option value="Marriage_Leave">Marriage Leave</option>
+				    <option value="Comp_Off">Comp Off</option>
+				    <option value="Office_ShutDown">Office ShutDown</option>
+				    <option value="Bereavement_Leave">Bereavement Leave</option>
+                                </select>
+                  </td>
+               </tr>
+               
+               <tr>
+                  <td id="cap"><label class="control-label" translate>Leave Balance :</label> </td>
+		  <td id="cap">{{empTabCtrl.empLeaveForm.leave_bal}}</td>
+               </tr>
+               
+               <tr>
+                  <td id="cap">
+                     <label class="control-label" translate>From :</label>
+                  </td>
+                  <td id="cap">
+                     <input type="text"  name="from_dt"
+                                        datepicker-popup="{{empTabCtrl.datePickerformat}}" ng-model="empTabCtrl.empLeaveForm.from_dt"
+                                        is-open="empTabCtrl.allCals.from_dt" datepicker-options="{{empTabCtrl.dateOptions}}"
+                                        close-text="Close" required>
+                                    <span >
+                                        <button type="button" class="btn-default" ng-click="empTabCtrl.toggleCal($event,'from_dt')">
+                                            <span class="fa fa-calendar"></span>
+                                        </button>
+					<select ng-model="empTabCtrl.empLeaveForm.session1_type" ng-change="empTabCtrl.calculateLeaveCount(this,empTabCtrl.empLeaveForm.from_dt)">
+					  <option value="" selected="selected">Full Day</option>
+					  <option value="half_day">Half Day</option>
+				        </select>
+                                    </span>
+                  </td>
+               </tr>
+ 		<tr>
+                  <td id="cap">
+                     <label class="control-label" translate>To :</label>
+                  </td>
+                  <td id="cap">
+                     <input type="text" name="to_date"
+                                        datepicker-popup="{{empTabCtrl.datePickerformat}}" ng-model="empTabCtrl.empLeaveForm.to_dt"
+                                        is-open="empTabCtrl.allCals.to_date" datepicker-options="{{empTabCtrl.dateOptions}}"
+                                        close-text="Close" ng-change="empTabCtrl.calculateLeaveCount(this,empTabCtrl.empLeaveForm.from_dt)"required>
+                                    <span >
+                                        <button type="button" class="btn-default" ng-click="empTabCtrl.toggleCal($event,'to_date')">
+                                            <span class="fa fa-calendar"></span>
+                                        </button>
+					<select ng-model="empTabCtrl.empLeaveForm.session2_type" ng-change="empTabCtrl.calculateLeaveCount(this,empTabCtrl.empLeaveForm.from_dt)">
+					  <option value="" selected="selected">Full Day</option>
+					  <option value="half_day">Half Day</option>
+				        </select>
+                                    </span> 
+                  </td>
+               </tr>
+		<tr>
+                  <td id="cap">
+                      <label class="control-label" translate>Days :</label>
+                  </td>
+                  <td id="cap">
+                     {{empTabCtrl.empLeaveForm.days}}
+                  </td>
+               </tr>
+		<tr>
+                  <td id="cap">
+                     <label class="control-label" translate>Forward To/Approver :</label>
+                  </td>
+                  <td id="cap">
+                     <select  ng-model="empTabCtrl.empLeaveForm.approver">
+                                    <option value="">--Select One--</option>
+				    <option value="vinod">Vinod</option>
+				    <option value="fazal">Fazal</option>
+				    <option value="mamatha">Mamatha</option>
+				    <option value="rakha">Rekha</option>
+                                </select>
+                  </td>
+               </tr>
+		<tr>
+                  <td id="cap">
+                     <label class="control-label required" translate>Reason :</label>
+                  </td>
+                  <td id="cap">
+                     <textarea ng-model="empTabCtrl.empLeaveForm.reason" name="reason" required></textarea>
+                  </td>
+               </tr>
+		<tr>
+                  <td id="cap">
+                     <label class="control-label required" translate>Contact Details :</label>
+                  </td>
+                  <td id="cap">
+                     <textarea ng-model="empTabCtrl.empLeaveForm.contact_details" name="contact_details" required></textarea>
+                  </td>
+               </tr>
+
+		<tr>
+                  <td align="right">
+                     <button class="btn btn-success" type="submit" on-click="empTabCtrl.applyNewLeaveRequest()" translate>
+                    Apply
+                </button>
+                  </td>
+                  <td>
+                     <button class="btn btn-default" type="button" ng-click="empTabCtrl.cancelLeaveApplication()" translate>
+                    Cancel
+                </button>
+                  </td>
+               </tr>			
+            </table>
+         </form>
+    </div>

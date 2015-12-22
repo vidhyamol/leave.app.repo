@@ -1,0 +1,114 @@
+
+         <form role="form" name="empLeaveForm" rc-submit="empLeaveCtrl.applyNewLeaveRequest()" novalidate>
+	     <h4 align="center"><u>Leave Application</u></h4>
+            <table border = "0"align="center">
+               <tr>
+                  <td><label class=" control-label" translate>Name:</label></td>
+                  <td><input type="text"  name="name" ng-model="empLeaveCtrl.empLeaveForm.name"
+			 maxlength="50">
+
+                  </td>
+               </tr>
+               
+               <tr>
+                  <td><label class="control-label" translate>Leave Type :</label> </td>
+                  <td><select ng-model="empLeaveCtrl.empLeaveForm.leave_type">
+                                    <option value="">--Select One--</option>
+                                </select>
+                  </td>
+               </tr>
+               
+               <tr>
+                  <td><label class="control-label" translate>Leave Balance :</label> </td>
+		  <td>{{empLeaveCtrl.empLeaveForm.leave_bal}}</td>
+               </tr>
+               
+               <tr>
+                  <td>
+                     <label class="control-label" translate>From :</label>
+                  </td>
+                  <td>
+                     <input type="text"  name="from_dt"
+                                        datepicker-popup="{{empLeaveCtrl.datePickerformat}}" ng-model="empLeaveCtrl.empLeaveForm.from_dt"
+                                        is-open="empLeaveCtrl.allCals.from_dt" datepicker-options="{{empLeaveCtrl.dateOptions}}"
+                                        close-text="Close" required>
+                                    <span >
+                                        <button type="button" class="btn-default" ng-click="empLeaveCtrl.toggleCal($event,'from_dt')">
+                                            <span class="fa fa-calendar"></span>
+                                        </button>
+					<select ng-model="empLeaveCtrl.empLeaveForm.session1_type" ng-change="empLeaveCtrl.calculateLeaveCount(this,empLeaveCtrl.empLeaveForm.from_dt)">
+					  <option value="" selected="selected">Full Day</option>
+					  <option value="half_day">Half Day</option>
+				        </select>
+                                    </span>
+                  </td>
+               </tr>
+ 		<tr>
+                  <td>
+                     <label class="control-label" translate>To :</label>
+                  </td>
+                  <td>
+                     <input type="text" name="to_date"
+                                        datepicker-popup="{{empLeaveCtrl.datePickerformat}}" ng-model="empLeaveCtrl.empLeaveForm.to_date"
+                                        is-open="empLeaveCtrl.allCals.to_date" datepicker-options="{{empLeaveCtrl.dateOptions}}"
+                                        close-text="Close" ng-change="empLeaveCtrl.calculateLeaveCount(this,empLeaveCtrl.empLeaveForm.from_dt)"required>
+                                    <span >
+                                        <button type="button" class="btn-default" ng-click="empLeaveCtrl.toggleCal($event,'to_date')">
+                                            <span class="fa fa-calendar"></span>
+                                        </button>
+					<select ng-model="empLeaveCtrl.empLeaveForm.session2_type" ng-change="empLeaveCtrl.calculateLeaveCount(this,empLeaveCtrl.empLeaveForm.from_dt)">
+					  <option value="" selected="selected">Full Day</option>
+					  <option value="half_day">Half Day</option>
+				        </select>
+                                    </span> 
+                  </td>
+               </tr>
+		<tr>
+                  <td>
+                      <label class="control-label" translate>Days :</label>
+                  </td>
+                  <td>
+                     {{empLeaveCtrl.empLeaveForm.days}}
+                  </td>
+               </tr>
+		<tr>
+                  <td>
+                     <label class="control-label" translate>Forward To/Approver :</label>
+                  </td>
+                  <td>
+                     <select  ng-model="empLeaveCtrl.empLeaveForm.approver">
+                                    <option value="">--Select One--</option>
+                                </select>
+                  </td>
+               </tr>
+		<tr>
+                  <td>
+                     <label class="control-label required" translate>Reason :</label>
+                  </td>
+                  <td>
+                     <textarea ng-model="empLeaveCtrl.empLeaveForm.reason" name="reason" required></textarea>
+                  </td>
+               </tr>
+		<tr>
+                  <td>
+                     <label class="control-label required" translate>Contact Details :</label>
+                  </td>
+                  <td>
+                     <textarea ng-model="empLeaveCtrl.empLeaveForm.contact_details" name="contact_details" required></textarea>
+                  </td>
+               </tr>
+
+		<tr>
+                  <td align="right">
+                     <button class="btn btn-success" type="submit" j-btn="Ze Provider AddProvider" translate>
+                    Apply
+                </button>
+                  </td>
+                  <td>
+                     <button class="btn btn-default" type="button" ng-click="empLeaveCtrl.cancelLeaveApplication()" translate>
+                    Cancel
+                </button>
+                  </td>
+               </tr>			
+            </table>
+         </form>
